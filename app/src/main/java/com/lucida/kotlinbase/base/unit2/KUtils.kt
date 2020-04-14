@@ -11,3 +11,7 @@ object Test{
         println(string)
     }
 }
+
+fun checkClass(clazz: Class<TestDemo>){
+    println("传入了一个java的class:"+clazz.name)
+}

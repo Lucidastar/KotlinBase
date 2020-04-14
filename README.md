@@ -1,5 +1,6 @@
 ##### KotlinBase
-kotlin的基础语法学习
+
+##### [kotlin的基础语法学习](https://www.kotlincn.net/docs/reference/basic-syntax.html)
 
 ##### 变量声明
 
@@ -37,3 +38,67 @@ fun test(string: String){
 ```
 
 ##### kotlin与java之间互相调用
+
+object关键字，object后面跟一个类名，相当于匿名内部类
+
+```kotlin
+//匿名内部类的写法
+object Test{
+    fun say(string: String){
+        println(string)
+    }
+}
+```
+
+```kotlin
+fun checkClass(clazz: Class<TestDemo>){
+    println("传入了一个java的class:"+clazz.name)
+}
+
+```
+
+```java
+public static void checkKtClass(Class<KUtilsKt> clazz){
+    System.out.println("kotlin的class"+clazz.getName());
+}
+```
+
+调用时
+
+```java
+//java中调用kotlin的class参数
+JUtils.checkKtClass(KUtilsKt.class);
+```
+
+```kotlin
+//kotlin中调用java的class参数
+checkClass(TestDemo::class.java)
+```
+
+这就是他们之间的不同。
+
+##### 函数与lambda闭包
+
+嵌套函数(一般使用到递归)
+
+```kotlin
+fun function (): Unit {
+    println("begin")
+    fun say(count:Int = 10){
+        println(count)
+        if (count > 0){
+            say(count - 1)
+        }
+    }
+    say()
+}
+```
+
+扩展函数
+
+Lambda闭包语法
+
+高阶函数
+
+内联函数
+
