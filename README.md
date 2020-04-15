@@ -475,12 +475,179 @@ fun getSealed(superCommand: SuperCommand){
 
 ##### 解构
 
+定义一下
+
+```kotlin
+class User(var name:String,var age:Int) {
+    operator fun component1() = name//代表第一个元素
+    operator fun component2() = age//代表第二个元素
+}
+//必须是这样的定义
+```
+
+>operator:将一个函数标记为重载一个操作符或者实现一个约定
+
+使用
+
+```kotlin
+fun testJG(){
+    val user = User("hyli",12)
+    val (age,name) = user
+    println(age)
+    println(name)
+}
+```
+
+比如map就使用了这种解构
+
+```kotlin
+fun testMap(){
+    val map = mapOf<String,String>("key" to "key","value" to "value")
+    for ((k,v) in map){
+        println(k+"---"+v)
+    }
+}
+```
+
 ##### 循环与集合操作符
+
+```kotlin
+fun testLoop(): Unit {
+    for ( i in 1..10){
+        println(i)
+    }
+    for (i in 1 until 10){
+    }
+    for (i in 10 downTo 2){
+    }
+    for (i in 1..20 step 2){
+
+    }
+    repeat(10){
+        println(it)
+    }
+
+    //这种就是解构的方式
+    val list = arrayListOf<String>("a","b","c","d")
+    for ((index,name) in list.withIndex()){
+        println("第${index}元素是：${name}")
+    }
+}
+```
 
 ##### 运算符重载
 
+与rxjava很像
+
+```kotlin
+fun testOperator(): Unit {
+    val list = arrayListOf<Char>('a','b','c','d','e')
+    val result = list
+        .run { showResult(toList())}
+        .map {it - 'a' }
+        .filter { it > 0 }
+        .find { it > 1 }
+    println(result)
+}
+
+fun showResult(chars:List<Char>): List<Char> {
+    for (char in chars){
+        println("${char} == " + char.toInt())
+    }
+    return chars
+}
+```
+
 ##### 作用域函数
+
+作用域可以操作一切，而集合的函数只能操作集合
+
+```kotlin
+//作用域操作符
+fun testScopeOperator(): Unit {
+    val user = User("hyli",12)
+    //run和let都会返回闭包的执行结果，区别let有闭包参数，run没有闭包参数
+    val runResult = user.run {
+        this::class
+    }
+    println(runResult)
+    val LetResut = user.let { user ->
+        user::class
+    }
+    println(LetResut.toString())
+    //also和apply都不返回执行结果，also有闭包参数，apply没有闭包参数
+    user.also {
+        user -> user.name = "also"
+    }
+    println(user.name)
+    user.apply { this.name = "apply" }
+    println(user.name)
+    //takeIf的闭包返回一个判断结果，为false时，takeIf函数会返回空
+    //takeUnless与takeIf相反 闭包的判断结果，为true时返回结果为空
+    user.takeIf { user.name == "" }?.also { print(user.name) }
+    user.takeUnless { user -> user.name == "" }
+}
+```
+
+run{}
+
+let{}
+
+also{}
+
+apply{} 
+
+takeIf{}
+
+takeUnless{}
 
 ##### 中辍表达式
 
-##### DSL
+定义
+
+
+
+像：step、 in 、zip  
+
+##### 特殊符号
+
+反引号：可以用反引号解决关键字冲突问题
+
+```kotlin
+fun `1234`() {
+    println("test")
+}
+fun ` `(){
+    
+}
+fun ``() = Unit
+```
+
+###### kotlin中如何进行比较对象
+
+>kotlin                 java
+
+a == b               a.equals(b)
+
+a === b              a==b
+
+```kotlin
+public typealias A = File
+val file = A("")
+//typealias映射过来  像HasMap等等  跨平台兼容性
+```
+
+##### DSL（Domain Specific Language） 领域专用语言
+
+内部DSL vs 外部DSL
+
+内部是不依赖外部语言 像：JSON  XML CSS Makefile
+
+外部需要依赖其他语言 像：Anko Kolley  buid.gradle
+
+>优点：提高开发效率  减小沟通成本
+
+​			
+
+
+
