@@ -605,7 +605,7 @@ takeUnless{}
 
 定义
 
-
+infix
 
 像：step、 in 、zip  
 
@@ -649,5 +649,35 @@ val file = A("")
 
 ​			
 
+#### 语法特性
 
+##### 变量、常量与只读
+
+var与val声明的变量，最本质的区别是：val不能有setter
+
+val是不能再复制的，可以重新他的get方法，达到set的目的
+
+变量的声明
+
+```kotlin
+const val a = 12
+object C{
+    const val s = 0
+}
+class E{
+    companion object{
+        const val f = 0
+    }
+}
+```
+
+>const 只能修饰object的属性，或top-level变量
+>
+>const 变量的值必须在编译期间确定下来，所以他的类型只能是String或者基本类型
+
+##### 空安全是如何实现的
+
+##### 内联的特殊情况
+
+##### kotlin的真泛型与实现方法
 

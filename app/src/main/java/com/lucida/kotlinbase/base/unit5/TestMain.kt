@@ -92,7 +92,7 @@ fun testScopeOperator(): Unit {
 
 fun `1234`() {
     println("test")
-    val file = A("")
+    val file = BF("")
 }
 
-public typealias A = File
+public typealias BF = File
