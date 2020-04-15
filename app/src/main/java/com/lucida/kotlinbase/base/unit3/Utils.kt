@@ -1,9 +1,13 @@
 package com.lucida.kotlinbase.base.unit3
 
+import java.io.File
+import java.nio.charset.Charset
+
 fun echo(name: String = "lucia") = println(name)
 
 fun main(args: Array<String>) {
     function()
+
 }
 fun function (): Unit {
     println("begin")
@@ -15,3 +19,5 @@ fun function (): Unit {
     }
     say()
 }
+
+fun File.readText(charset: Charset = Charsets.UTF_8) :String = readBytes().toString(charset)

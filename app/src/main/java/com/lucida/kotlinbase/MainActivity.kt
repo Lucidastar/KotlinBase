@@ -9,7 +9,12 @@ import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.math.round
 
-class MainActivity : AppCompatActivity() {
+class MainActivity(var int : Int) : AppCompatActivity() {
+
+    init {
+        int = 12
+        println("执行构造函数的初始化的工作")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
