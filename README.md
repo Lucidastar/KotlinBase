@@ -282,6 +282,7 @@ class CustomView: View {
 private protected public  internal(一个模块中的类都可以访问到，相当于一个module)
 
 伴生对象
+伴生对象一般在类构造之前已经被实例化
 
 伴生对象一定要写到一个类的内部
 
@@ -679,5 +680,148 @@ class E{
 
 ##### 内联的特殊情况
 
+>1. 在Kotlin中，内部Lambda是不允许中断外部函数执行的
+>2. inline的Lambda可以中断外部函数调用
+>3. crossinline不允许inline的Lambda中断外部函数执行
+>4. noinline拒绝内联
+
+###### 对2的事例
+
+```kotlin
+inline fun test(l:() ->Unit){
+    l.invoke()
+    return
+}
+```
+
+```kotlin
+fun main(args: Array<String>) {
+    test {
+        println("test")
+        return
+    }
+    println("test")
+}
+```
+
+当return后，就不会打印下边的test了，也就中断了外部的函数。
+
+当去掉inline后，是不允许return的会报错。
+
+###### 对于3的事例
+
+我们只想中断内部，而会继续执行下边的函数，我们需要这样做
+
+```kotlin
+inline fun test(crossinline l:() ->Unit){
+    l.invoke()
+    return
+}
+```
+
+```kotlin
+test {
+    println("test")
+    return@test
+    println("test1")
+}
+println("test3")
+```
+
+这时候，调用的时候，test1就不会打印，而test3依然会打印，不中断外部函数的调用
+
+###### 对于4的事例
+
+```kotlin
+inline fun test1(l0:() -> Unit, noinline l1:() -> Unit): () -> Unit {
+    l0.invoke()
+    l1.invoke()
+    return l1
+}
+```
+
+如果不用noinline进行修饰的话，就会报错
+
+main函数值就会被我们给改变了，就会导致我们的函数非法了，所以要加上noinline
+
 ##### kotlin的真泛型与实现方法
 
+```kotlin
+class Test<T> where T:CallBack , T:Runnable{
+    fun add(t:T){
+        t.run()
+        t.callback()
+    }
+
+}
+class A : CallBack ,Runnable{
+    override fun callback() {
+        println("A.callback")
+    }
+
+    override fun run() {
+        println("A.run")
+    }
+
+}
+
+interface CallBack{
+    fun callback()
+}
+
+val test = Test<A>()
+    test.add(A())
+```
+
+kotlin的真泛型
+
+
+```java
+public <T> T fromJson(String json,Class<T> classOff){
+    
+}
+```
+
+```kotlin
+inline fun <reified T> Gson.fromJson(json:String) :T{
+    return fromJson(json,T::class.java)
+}
+//inline是不能被省略的
+```
+
+让类也具有真泛型的功能
+
+```kotlin
+class View<T>(val clazz : Class<T>) {
+    //运行时获取到class
+    val presenter by lazy { clazz.newInstance() }
+    companion object{
+        inline operator fun <reified T> invoke() = View(T::class.java)
+    }
+}
+class Presenter
+
+fun main(args: Array<String>) {
+    val p = View<Presenter>().presenter
+}
+```
+
+#### Kotlin的扩展库
+
+##### kotlinx.coroutines(协程库)
+
+可控制
+
+轻量级
+
+语法糖
+
+###### 启动协程
+
+runBlocking
+
+suspend,被suspend修饰的函数只能被suspend修饰的函数调用，因为suspend修饰的函数（或lambda）编译后会多一个参数类型的缴continuation，协程的异步调用本质上就是一次回调
+
+##### kotlinx-io(io库)
+
+##### AndroidKTX

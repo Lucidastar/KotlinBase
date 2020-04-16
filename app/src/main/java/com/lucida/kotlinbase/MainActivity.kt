@@ -1,18 +1,23 @@
 package com.lucida.kotlinbase
 
 import android.content.ContentValues
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
+
 import java.io.BufferedInputStream
-import java.io.BufferedOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.math.round
 
-class MainActivity(var int : Int) : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
 
+    val mUrl:String = ""
     init {
-        int = 12
         println("执行构造函数的初始化的工作")
     }
 
@@ -21,7 +26,33 @@ class MainActivity(var int : Int) : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val double = round(2.0f) as Double
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO){
+                val bitmap = getImage(mUrl)
+                also {
 
+                }
+            }
+
+
+        }.also {
+
+        }
+//        iv.setImageBitmap(b)
+    }
+
+    fun getImage(url: String) :Bitmap{
+        val urlParams = URL(url)
+        val connection = urlParams.openConnection() as HttpURLConnection
+        connection.requestMethod = "GET"
+        connection.readTimeout=2000
+        connection.connect()
+        val inputStream = connection.inputStream
+        return BitmapFactory.decodeStream(inputStream)
+    }
+
+
+    fun getContent(v:View) {
 
     }
 
