@@ -825,3 +825,9 @@ suspend,被suspend修饰的函数只能被suspend修饰的函数调用，因为s
 ##### kotlinx-io(io库)
 
 ##### AndroidKTX
+
+方便Android开发的同时起到指定规范的作用
+
+巩固Kotlin语言
+
+简介收紧Android碎片化问题
