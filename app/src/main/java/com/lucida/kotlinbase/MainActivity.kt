@@ -34,7 +34,7 @@ class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        intent.getStringExtra("");
         val double = round(2.0f) as Double
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.IO){
@@ -48,6 +48,7 @@ class MainActivity: AppCompatActivity() {
         }.also {
 
         }
+
 //        iv.setImageBitmap(b)
     }
 

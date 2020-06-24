@@ -9,6 +9,9 @@ fun echo(name:String){
 object Test{
     fun say(string: String){
         println(string)
+        with(StringBuilder()){
+
+        }
     }
 }
 

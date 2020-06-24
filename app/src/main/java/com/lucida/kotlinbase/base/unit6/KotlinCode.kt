@@ -36,12 +36,12 @@ fun start() {
         while (true){
             val t = channel.receive()
             when(t){
-                is UI -> launch(UI) {
-                    t.run()
-                }
-                is Task -> launch {
-                    t.run()
-                }
+//                is UI -> launch(UI) {
+//                    t.run()
+//                }
+//                is Task -> launch {
+//                    t.run()
+//                }
             }
         }
     }

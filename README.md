@@ -193,6 +193,12 @@ fun lambdaStatement(isShowName: Boolean,block:() ->String){
         println(block.toString())
     }
 }
+
+inline fun <reified T> startActivity(context:Context,block : Intent.() -> Unit){
+    val intent = Intent(context,T::class.java)
+    intent.block()
+    context.startActivity(intent)
+}
 ```
 
 调用函数的声明
@@ -471,6 +477,8 @@ fun getSealed(superCommand: SuperCommand){
 密闭类可以扩展他的子类
 
 一般会用密闭类来代替枚举类
+
+密闭类也可以解决else的困扰
 
 #### 高级特性
 
